@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "A package to parse and create CRSF (Crossfire) frames, developed primarily to interoperate with ExpressLRS"
 authors = ["Alessio Morale <alessiomorale@gmail.com>"]
 license = "MIT"
+homepage = "https://github.com/AlessioMorale/crsf_parser"
+repository = "https://github.com/AlessioMorale/crsf_parser"
+
 readme = "README.rst"
 
 include = [
