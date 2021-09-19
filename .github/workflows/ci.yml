@@ -29,7 +29,7 @@ jobs:
           change_path: "."
           short_tags: true
           # If this is set to true, *every* commit will be treated as a new version.
-          bump_each_commit: true
+          bump_each_commit: false
       - name: Install Dependencies
         run: |
           poetry install
