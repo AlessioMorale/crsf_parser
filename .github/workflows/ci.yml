@@ -1,58 +1,57 @@
 name: CI
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-
-  test:
+  build_test_and_publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-      with:
-        fetch-depth: 0
-    - name: Check if Git tag exists
-      run: |
-        echo "HEAD_TAG=$(git tag --points-at HEAD)" >> $GITHUB_ENV
-    - name: Poetry Setup
-      uses: snok/install-poetry@v1.2
-      with:
-        version: 1.1.9
-    - id: semver_step
-      uses: paulhatch/semantic-version@v4.0.2
-      with:
-        # The prefix to use to identify tags
-        branch: "master"
-        tag_prefix: ""
-        format: "${major}.${minor}.${patch}-prerelease.${increment}"
-        change_path: "."
-        short_tags: true
-        # If this is set to true, *every* commit will be treated as a new version.
-        bump_each_commit: true
-    - name: Install Dependencies
-      run: |
-        poetry install
-        poetry version "${{ steps.semver_step.outputs.version_tag }}"
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+      - name: Check if Git tag exists
+        run: |
+          echo "HEAD_TAG=$(git tag --points-at HEAD)" >> $GITHUB_ENV
+      - name: Poetry Setup
+        uses: snok/install-poetry@v1.2
+        with:
+          version: 1.1.9
+      - id: semver_step
+        uses: paulhatch/semantic-version@v4.0.2
+        with:
+          # The prefix to use to identify tags
+          branch: "master"
+          tag_prefix: ""
+          format: "${major}.${minor}.${patch}-prerelease.${increment}"
+          change_path: "."
+          short_tags: true
+          # If this is set to true, *every* commit will be treated as a new version.
+          bump_each_commit: true
+      - name: Install Dependencies
+        run: |
+          poetry install
+          poetry version "${{ steps.semver_step.outputs.version_tag }}"
 
-    - name: Code Quality
-      run: poetry run black . --check
+      - name: Code Quality
+        run: poetry run black . --check
 
-    - name: Test with pytest
-      run: poetry run pytest --cov .
-    - name: Build and Publish TestPypi
-      run: |
-        poetry config repositories.${{ secrets.REPO_NAME }} ${{ secrets.POETRY_REPO_URL }}
-        poetry config pypi-token.${{ secrets.REPO_NAME }} ${{ secrets.PYPY_TEST_TOKEN }}
-        poetry version "${{ steps.semver_step.outputs.version_tag }}"
-        poetry build
-        poetry publish -r ${{ secrets.REPO_NAME }}
+      - name: Test with pytest
+        run: poetry run pytest --cov .
+      - name: Build and Publish TestPypi
+        run: |
+          poetry config repositories.${{ secrets.REPO_NAME }} ${{ secrets.POETRY_REPO_URL }}
+          poetry config pypi-token.${{ secrets.REPO_NAME }} ${{ secrets.PYPY_TEST_TOKEN }}
+          poetry version "${{ steps.semver_step.outputs.version_tag }}"
+          poetry build
+          poetry publish -r ${{ secrets.REPO_NAME }}
 
-    - name: Build and Publish
-      if: env.HEAD_TAG != ''
-      run: |
-        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-        poetry version "${{ steps.semver_step.outputs.version_tag }}"
-        poetry build
-        poetry publish
+      - name: Build and Publish
+        if: env.HEAD_TAG != ''
+        run: |
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry version "${{ steps.semver_step.outputs.version_tag }}"
+          poetry build
+          poetry publish
