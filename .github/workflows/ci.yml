@@ -9,11 +9,13 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
+    - name: Check if Git tag exists
+      run: |
+        echo "HEAD_TAG=$(git tag --points-at HEAD)" >> $GITHUB_ENV
     - name: Poetry Setup
       uses: snok/install-poetry@v1.2
       with:
@@ -39,10 +41,18 @@ jobs:
 
     - name: Test with pytest
       run: poetry run pytest --cov .
-    - name: Build And Publish
+    - name: Build and Publish TestPypi
       run: |
         poetry config repositories.${{ secrets.REPO_NAME }} ${{ secrets.POETRY_REPO_URL }}
         poetry config pypi-token.${{ secrets.REPO_NAME }} ${{ secrets.PYPY_TEST_TOKEN }}
         poetry version "${{ steps.semver_step.outputs.version_tag }}"
         poetry build
         poetry publish -r ${{ secrets.REPO_NAME }}
+
+    - name: Build and Publish
+      if: env.HEAD_TAG != ''
+      run: |
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+        poetry version "${{ steps.semver_step.outputs.version_tag }}"
+        poetry build
+        poetry publish
