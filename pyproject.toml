@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A package to parse and create CRSF (Crossfire) frames, developed primarily to interoperate with ExpressLRS"
 authors = ["Alessio Morale <alessiomorale@gmail.com>"]
 license = "MIT"
-readme = README.rst
+readme = "README.rst"
 
 include = [
     "LICENSE",
