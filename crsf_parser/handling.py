@@ -275,10 +275,10 @@ def crsf_build_frame(
     frame = crsf_frame.build(
         {
             "header": {
-                "frame_length": PAYLOADS_SIZE.get(PacketsTypes.RC_CHANNELS_PACKED) + 2,
+                "frame_length": PAYLOADS_SIZE.get(type) + 2,
                 "destination_address": destination_address,
                 "origin_address": origin_address,
-                "type": PacketsTypes.RC_CHANNELS_PACKED,
+                "type": type,
             },
             "payload": payload,
             "CRC": 0,
