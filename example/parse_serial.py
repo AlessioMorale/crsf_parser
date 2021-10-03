@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 from operator import contains
 from typing import Container
-from crsf_parser import CRSFParser
+from crsf_parser import CRSFParser, PacketValidationStatus
 from serial import Serial
 
 from crsf_parser.payloads import PacketsTypes
-from crsf_parser import crsf_frame
 from crsf_parser.handling import crsf_build_frame
 
 
-def print_frame(frame: Container) -> None:
-    print(frame)
+def print_frame(frame: Container, status: PacketValidationStatus) -> None:
+    print(
+        f"""
+    {status}
+    {frame}
+    """
+    )
 
 
 crsf_parser = CRSFParser(print_frame)

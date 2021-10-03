@@ -1,6 +1,7 @@
 __version__ = "0.0.0"
 
 from dataclasses import dataclass
+from tkinter import Pack
 from typing import Any, Callable, Container
 
 from .frames import crsf_frame, SYNC_BYTE
@@ -21,6 +22,7 @@ class PacketValidationStatus(Enum):
     VALID = 1
     UNKNOWN = 2
     INVALID = -1
+    CRC = -2
 
 
 @dataclass
@@ -32,11 +34,20 @@ class ProtocolStats:
 
 
 class CRSFParser:
-    def __init__(self, consumer: Callable[[], Container]) -> None:
+    def __init__(
+        self,
+        consumer: Callable[
+            [],
+            Container,
+        ],
+    ) -> None:
         self._input = bytearray()
         self._consumer = consumer
         self._stats = ProtocolStats()
         pass
+
+    def get_stats(self) -> ProtocolStats:
+        return self._stats
 
     def _validate_packet(
         self, data: Iterable[int]
@@ -69,12 +80,13 @@ class CRSFParser:
                         packet_crc = content.CRC
                         crc = crsf_frame_crc(data)
                         if crc != packet_crc:
+                            status = PacketValidationStatus.CRC
                             self._stats.crc_errors += 1
                             print(f"invalid CRC, expected{crc}, actual {packet_crc}")
                         else:
                             self._stats.valid_frames += 1
-                            if self._consumer:
-                                self._consumer(content)
+                        if self._consumer:
+                            self._consumer(content, status)
                         continue
                     else:
                         self._stats.invalid_frames += 1
