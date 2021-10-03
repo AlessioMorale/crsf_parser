@@ -63,4 +63,6 @@ payload_link_statistics = Struct(
     "downlink_snr" / Int8sb,
 )
 
-payload_rc_channels_packed = ByteSwapped(BitStruct("channels" / Array(16, BitsInteger(11))))
+payload_rc_channels_packed = ByteSwapped(
+    BitStruct("channels" / Array(16, BitsInteger(11)))
+)
