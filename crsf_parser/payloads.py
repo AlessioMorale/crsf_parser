@@ -1,7 +1,8 @@
 from construct import (
     Array,
+    BitStruct,
     BitsInteger,
-    Bitwise,
+    ByteSwapped,
     Enum,
     Int16ub,
     Int24ub,
@@ -62,4 +63,4 @@ payload_link_statistics = Struct(
     "downlink_snr" / Int8sb,
 )
 
-payload_rc_channels_packed = Struct("channels" / Bitwise(Array(16, BitsInteger(11))))
+payload_rc_channels_packed = ByteSwapped(BitStruct("channels" / Array(16, BitsInteger(11))))
