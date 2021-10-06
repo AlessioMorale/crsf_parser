@@ -1,7 +1,6 @@
 __version__ = "0.0.0"
 
 from dataclasses import dataclass
-from tkinter import Pack
 from typing import Any, Callable, Container
 
 from .frames import crsf_frame, SYNC_BYTE
