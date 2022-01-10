@@ -24,7 +24,7 @@ pyserial = "^3.5"
 black = "^21.9b0"
 mypy = "^0.910"
 pylint = "^2.11.1"
-pytest-cov = "^2.12.1"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
