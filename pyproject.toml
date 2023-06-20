@@ -22,7 +22,7 @@ construct-typing = "^0.5"
 pytest = "^5.2"
 pyserial = "^3.5"
 black = "^21.9b0"
-mypy = "^0.910"
+mypy = "^1.0.0"
 pylint = "^2.11.1"
 pytest-cov = "^2.12.1"
 
