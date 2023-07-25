@@ -16,7 +16,7 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.8"
 construct= "^2.10"
-construct-typing = "^0.5"
+construct-typing = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
