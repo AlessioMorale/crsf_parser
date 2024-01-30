@@ -16,7 +16,7 @@ jobs:
         run: |
           echo "HEAD_TAG=$(git tag --points-at HEAD)" >> $GITHUB_ENV
       - name: Poetry Setup
-        uses: snok/install-poetry@v1.2
+        uses: snok/install-poetry@v1.3
         with:
           version: 1.1.9
       - id: semver_step
