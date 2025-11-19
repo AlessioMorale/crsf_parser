@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "crsf_parser"
-version = "0.0.0"
+version = "0.3.3"
 description = "A package to parse and create CRSF (Crossfire) frames, developed primarily to interoperate with ExpressLRS"
 authors = ["Alessio Morale <alessiomorale@gmail.com>"]
 license = "MIT"

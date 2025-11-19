@@ -1,20 +1,18 @@
-__version__ = "0.0.0"
+__version__ = "0.3.3"
 
 from dataclasses import dataclass
-from typing import Any, Callable, Container
+from typing import Callable, Container
 
 from .frames import crsf_frame, SYNC_BYTE
 from enum import Enum
-from typing import Any, Callable, Container, Iterable, Tuple
+from typing import Callable, Container, Iterable, Tuple
 from .handling import crsf_frame_crc
 from .payloads import (
     PacketsTypes,
-    PAYLOADS_SIZE,
+    PAYLOADS_SIZE
 )
 
-from construct import (
-    StreamError,
-)
+from construct import StreamError
 
 
 class PacketValidationStatus(Enum):
@@ -65,7 +63,7 @@ class CRSFParser:
             while len(input) > 0:
                 val = input[0]
                 if val == SYNC_BYTE:
-                    status, size, frame_type = self._validate_packet(
+                    status, size, _ = self._validate_packet(
                         [input[1], input[2]]
                     )
                     if status == PacketValidationStatus.VALID:

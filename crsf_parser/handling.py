@@ -1,9 +1,8 @@
-from typing import Any
-from construct import Checksum, Int8ub, Pointer, this
+from typing import Dict, Any
 from .frames import crsf_frame
 from .payloads import (
     PacketsTypes,
-    PAYLOADS_SIZE,
+    PAYLOADS_SIZE
 )
 
 _crc_tab = [
@@ -262,26 +261,26 @@ _crc_tab = [
     0x53,
     0x86,
     0x2C,
-    0xF9,
+    0xF9
 ]
 
 
 def crsf_build_frame(
-    type: PacketsTypes,
-    payload: "dict[str, Any]",
-    destination_address: int = 0,
-    origin_address: int = 0,
-) -> bytes:
+        type: PacketsTypes,
+        payload: "Dict[str, Any]",
+        destination_address: int = 0,
+        origin_address: int = 0
+    ) -> bytes:
     frame = crsf_frame.build(
         {
             "header": {
                 "frame_length": PAYLOADS_SIZE.get(type) + 2,
                 "destination_address": destination_address,
                 "origin_address": origin_address,
-                "type": type,
+                "type": type
             },
             "payload": payload,
-            "CRC": 0,
+            "CRC": 0
         }
     )
     crc = crsf_frame_crc(frame)
